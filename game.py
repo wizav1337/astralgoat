@@ -35,15 +35,15 @@ class Game:
 
         # Loading the game assets
         # NOTE: We're using different values and image paths here specifically for the Trinket application
-        self.background = GameObject(0, 0, self.width, self.height, background_asset)
-        self.treasure = GameObject(280, 35, 40, 40, treasure_asset)
-        self.player = Player(280, 530, 40, 40, player_asset, 1)
+        self.background = GameObject(0, 0, self.width, self.height, assets_in_memory['background.png'])
+        self.treasure = GameObject(280, 35, 40, 40, assets_in_memory['treasure.png'])
+        self.player = Player(280, 530, 40, 40, assets_in_memory['player.png'], 1)
 
         # Array of enemies
         self.enemies = [
-            Enemy(0, 450, 40, 40, 'assets/enemy.png', 3),
-            Enemy(250, 300, 40, 40, 'assets/enemy.png', 3),
-            Enemy(0, 150, 40, 40, 'assets/enemy.png', 3),
+            Enemy(0, 450, 40, 40, assets_in_memory['enemy.png'], 3),
+            Enemy(250, 300, 40, 40, assets_in_memory['enemy.png'], 3),
+            Enemy(0, 150, 40, 40, assets_in_memory['enemy.png'], 3),
         ]
 
     def draw_objects(self):
