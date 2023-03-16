@@ -1,11 +1,11 @@
 import pygame
+import zipfile
+import io
+from PIL import Image
 from gameObject import GameObject
 from player import Player
 from enemy import Enemy
-
-
 class Game:
-
     def __init__(self):
         self.width = 600
         self.height = 600
@@ -14,11 +14,30 @@ class Game:
         self.game_window = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
 
+        #loading assets
+        def load_assets(archive):
+            assets = {}
+            with zipfile.ZipFile(archive, 'r') as zfile:
+                for name in zfile.namelist():
+                    with zfile.open(name) as file:
+                        assets[name] = io.BytesIO(file.read())
+            return assets
+
+        archive = 'ASSETS1.Z'
+        assets_in_memory = load_assets(archive)
+        with assets_in_memory['background.png'] as background_file:
+            background_asset = background_file.read()
+        with assets_in_memory['treasure.png'] as treasure_file:
+            treasure_asset = treasure_file.read()
+        with assets_in_memory['player.png'] as player_file:
+            player_asset = player_file.read()
+
+
         # Loading the game assets
         # NOTE: We're using different values and image paths here specifically for the Trinket application
-        self.background = GameObject(0, 0, self.width, self.height, 'assets/background.png')
-        self.treasure = GameObject(280, 35, 40, 40, 'assets/treasure.png')
-        self.player = Player(280, 530, 40, 40, 'assets/player.png', 1)
+        self.background = GameObject(0, 0, self.width, self.height, background_asset)
+        self.treasure = GameObject(280, 35, 40, 40, treasure_asset)
+        self.player = Player(280, 530, 40, 40, player_asset, 1)
 
         # Array of enemies
         self.enemies = [
@@ -57,7 +76,8 @@ class Game:
         return False
 
     # Collision detection
-    def detect_collision(self, object_1, object_2):
+    @staticmethod
+    def detect_collision(object_1, object_2):
         if object_1.y > (object_2.y + object_2.height):
             return False
         elif (object_1.y + object_1.height) < object_2.y:
