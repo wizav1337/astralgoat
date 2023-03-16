@@ -1,11 +1,15 @@
-import zipfile
+import pickle
+import io
+from PIL import Image
 
-def create_zip_archive(files, output_file):
-    with zipfile.ZipFile(output_file, 'w', zipfile.ZIP_DEFLATED) as zfile:
-        for file in files:
-            zfile.write(file)
+# Load the assets into memory
+assets = {
+    'background.png': Image.open('assets/background.png'),
+    'treasure.png': Image.open('assets/treasure.png'),
+    'player.png': Image.open('assets/player.png'),
+    'enemy.png': Image.open('assets/enemy.png')
+}
 
-assets = ['assets/background.png', 'assets/enemy.png', 'assets/player.png', 'assets/treasure.png']
-output_file = 'ASSETS1.Z'
-
-create_zip_archive(assets, output_file)
+# Serialize and save the assets to a custom binary file
+with open('ASSETS1.bin', 'wb') as binary_file:
+    pickle.dump(assets, binary_file)
