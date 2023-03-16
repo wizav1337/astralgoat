@@ -25,25 +25,27 @@ class Game:
 
         archive = 'ASSETS1.Z'
         assets_in_memory = load_assets(archive)
-        with assets_in_memory['background.png'] as background_file:
+        with assets_in_memory['assets/background.png'] as background_file:
             background_asset = background_file.read()
-        with assets_in_memory['treasure.png'] as treasure_file:
+        with assets_in_memory['assets/treasure.png'] as treasure_file:
             treasure_asset = treasure_file.read()
-        with assets_in_memory['player.png'] as player_file:
+        with assets_in_memory['assets/player.png'] as player_file:
             player_asset = player_file.read()
+        with assets_in_memory['assets/enemy.png'] as enemy_file:
+            enemy_asset = enemy_file.read()
 
 
         # Loading the game assets
         # NOTE: We're using different values and image paths here specifically for the Trinket application
-        self.background = GameObject(0, 0, self.width, self.height, assets_in_memory['background.png'])
-        self.treasure = GameObject(280, 35, 40, 40, assets_in_memory['treasure.png'])
-        self.player = Player(280, 530, 40, 40, assets_in_memory['player.png'], 1)
+        self.background = GameObject(0, 0, self.width, self.height, background_asset)
+        self.treasure = GameObject(280, 35, 40, 40, treasure_asset)
+        self.player = Player(280, 530, 40, 40, player_asset, 1)
 
         # Array of enemies
         self.enemies = [
-            Enemy(0, 450, 40, 40, assets_in_memory['enemy.png'], 3),
-            Enemy(250, 300, 40, 40, assets_in_memory['enemy.png'], 3),
-            Enemy(0, 150, 40, 40, assets_in_memory['enemy.png'], 3),
+            Enemy(0, 450, 40, 40, enemy_asset, 3),
+            Enemy(250, 300, 40, 40, enemy_asset, 3),
+            Enemy(0, 150, 40, 40, enemy_asset, 3),
         ]
 
     def draw_objects(self):
